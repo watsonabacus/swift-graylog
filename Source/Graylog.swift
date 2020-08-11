@@ -82,10 +82,10 @@ public class Graylog {
     // MARK: - init
 
     init() {
+      #if os(iOS) // Does not make sense to suspend logging in osx applications?
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
-
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
-
+      #endif
         sendLogsTimer = BackgroundRepeatingTimer(timeInterval: Graylog.timeInterval, queue: timerSerialQueue) { [weak self] in
             // Send pending logs synchronising logs
             // read/write operations.
